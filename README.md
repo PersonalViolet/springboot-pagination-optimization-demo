@@ -1,5 +1,56 @@
 # 用户使用翻页功能查到5000页时延迟超高？延迟关联+游标分页优化一下深度分页
 
+## 快速启动
+
+### 前置条件
+
+- JDK 17+（或与项目当前配置兼容的版本）
+- Maven 3.8+
+- MySQL 8.x
+- Node.js 20.19+ 或 22.12+
+
+### 1) 准备数据库
+
+1. 创建数据库 `page_demo`。
+2. 执行 [src/main/resources/init.sql](src/main/resources/init.sql) 建表。
+3. 按需修改 [src/main/resources/application.yml](src/main/resources/application.yml) 中的数据库账号密码。
+
+### 2) 启动后端
+
+在项目根目录执行：
+
+```bash
+mvn spring-boot:run
+```
+
+说明：应用启动时会自动生成 7000000 条新闻数据（见 `DataInitializer`），首次启动需要较长时间，请耐心等待。
+
+后端默认地址：`http://localhost:8080`
+
+### 3) 启动前端
+
+进入前端目录并安装依赖：
+
+```bash
+cd frontend-vue3/page-demo
+npm install
+```
+
+启动开发服务器：
+
+```bash
+npm run dev
+```
+
+前端默认地址：`http://localhost:5173`
+
+### 4) 验证接口
+
+前端默认请求后端：`http://localhost:8080/api/news`。
+
+- 传统分页：`/api/news/page`
+- 混合分页：`/api/news/mixpage`
+
 ## 问题需求
 
 一般用户在使用翻页功能时，翻页顶多翻50多页，`Google`搜索时也尽量不会让页数太大**防止深度分页这个恶心无解的问题**

@@ -11,6 +11,8 @@ public interface NewsArticleMapper {
 
     List<NewsArticle> selectPage(@Param("offset") int offset, @Param("size") int size);
 
+    List<NewsArticle> selectPageSmart(@Param("offset") int offset, @Param("size") int size);
+
     long count();
 
     List<NewsArticle> selectPageByCursor(@Param("lastArticle") NewsArticle lastArticle, @Param("size") int size);

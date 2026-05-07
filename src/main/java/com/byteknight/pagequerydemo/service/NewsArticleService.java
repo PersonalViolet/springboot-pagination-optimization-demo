@@ -65,17 +65,32 @@ public class NewsArticleService {
 
         if (hasLast) {
             records = newsArticleMapper.selectPageByCursor(lastArticle, size);
+            if (records.isEmpty()) {
+                // 已经是最后一页了，没有下一页了，保持不变
+                long elapsed = System.currentTimeMillis() - t0;
+                return new PageResult<>(page, size, total, elapsed, records, pageDelta, startArticle, lastArticle);
+            }
             startArticle = records.get(0);
             lastArticle = records.get(records.size() - 1);
             pageDelta = 1;
         } else if (hasStart) {
             records = newsArticleMapper.selectPreviousPageByCursor(startArticle, size);
+            if (records.isEmpty()) {
+                // 已经是最后一页了，没有下一页了，保持不变
+                long elapsed = System.currentTimeMillis() - t0;
+                return new PageResult<>(page, size, total, elapsed, records, pageDelta, startArticle, lastArticle);
+            }
             startArticle = records.get(0);
             lastArticle = records.get(records.size() - 1);
             pageDelta = -1;
         } else {
             int offset = (page - 1) * size;
-            records = newsArticleMapper.selectPage(offset, size);
+            records = newsArticleMapper.selectPageSmart(offset, size);
+            if (records.isEmpty()) {
+                // 已经是最后一页了，没有下一页了，保持不变
+                long elapsed = System.currentTimeMillis() - t0;
+                return new PageResult<>(page, size, total, elapsed, records, pageDelta, startArticle, lastArticle);
+            }
             startArticle = records.get(0);
             lastArticle = records.get(records.size() - 1);
         }

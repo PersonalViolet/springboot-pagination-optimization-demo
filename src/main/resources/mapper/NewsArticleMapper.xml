@@ -10,6 +10,12 @@
         LIMIT #{offset}, #{size}
     </select>
 
+    <select id="selectPageSmart" resultType="com.byteknight.pagequerydemo.entity.NewsArticle">
+        SELECT * FROM news_article t1
+                          JOIN (SELECT id FROM news_article ORDER BY publish_time DESC, id DESC LIMIT #{offset}, #{size}) t2
+                               ON t1.id = t2.id;
+    </select>
+
     <select id="count" resultType="long">
         SELECT COUNT(*) FROM news_article
     </select>

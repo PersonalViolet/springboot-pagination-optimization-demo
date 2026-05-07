@@ -33,7 +33,7 @@ public class NewsArticleController {
             @RequestParam(required = false, name = "startArticle.publishTime") String startArticlePublishTime,
             @RequestParam(required = false, name = "lastArticle.id") Long lastArticleId,
             @RequestParam(required = false, name = "lastArticle.publishTime") String lastArticlePublishTime,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam int page,
             @RequestParam(defaultValue = "10") int size) {
 
         NewsArticle startArticle = buildArticle(startArticleId, startArticlePublishTime);
