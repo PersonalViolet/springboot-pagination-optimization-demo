@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.byteknight.pagequerydemo.mapper.NewsArticleMapper">
+
+    <select id="selectPage" resultType="com.byteknight.pagequerydemo.entity.NewsArticle">
+        SELECT id, title, summary, source, author, publish_time, create_time
+        FROM news_article
+        ORDER BY publish_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM news_article
+    </select>
+    <select id="selectPageByCursor" resultType="com.byteknight.pagequerydemo.entity.NewsArticle">
+        SELECT id, title, summary, source, author, publish_time, create_time
+        FROM news_article
+        WHERE publish_time &lt; #{lastArticle.publishTime}
+        OR (publish_time = #{lastArticle.publishTime} AND id &lt; #{lastArticle.id})
+        ORDER BY publish_time DESC, id DESC
+        LIMIT #{size}
+    </select>
+
+</mapper>
