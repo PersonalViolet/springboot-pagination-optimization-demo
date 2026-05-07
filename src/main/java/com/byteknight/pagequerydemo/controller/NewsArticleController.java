@@ -40,9 +40,10 @@ public class NewsArticleController {
      */
     @GetMapping("/mixpage")
     public PageResult<NewsArticle> getHybridPage(
+            NewsArticle startArticle,
             NewsArticle lastArticle,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return newsArticleService.getHybridPage(lastArticle, page, size);
+        return newsArticleService.getHybridPage(startArticle, lastArticle, page, size);
     }
 }

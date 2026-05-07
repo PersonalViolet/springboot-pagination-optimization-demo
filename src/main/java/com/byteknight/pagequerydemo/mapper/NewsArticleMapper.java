@@ -14,4 +14,6 @@ public interface NewsArticleMapper {
     long count();
 
     List<NewsArticle> selectPageByCursor(@Param("lastArticle") NewsArticle lastArticle, @Param("size") int size);
+
+    List<NewsArticle> selectPreviousPageByCursor(NewsArticle startArticle, int size);
 }
