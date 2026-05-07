@@ -63,7 +63,7 @@ npm run dev
 
 ![show2](image/show2.png)
 
-![tudou](bqb\tudou.png)
+![tudou](bqb/tudou.png)
 
 每一页都卡10秒，看几十页可以折磨小土豆一下午(~~小土豆都没时间喝牛奶长高了~~)
 
