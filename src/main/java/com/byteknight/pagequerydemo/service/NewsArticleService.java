@@ -30,6 +30,7 @@ public class NewsArticleService {
      * 混合分页
      * 混合分页，三者选一：lastArticle → 下一页 / startArticle → 上一页 / page → 跳页。
      * 若三者都无效，兜底为 page=1。
+     * 三者只能一个有效，若同时存在，则抛出异常。
      * @param startArticle 上一次查询的第一条记录
      * @param lastArticle 上一次查询的最后一条记录
      * @param page 对应页码
