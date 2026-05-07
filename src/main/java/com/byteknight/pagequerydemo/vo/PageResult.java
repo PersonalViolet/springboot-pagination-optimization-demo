@@ -1,5 +1,6 @@
 package com.byteknight.pagequerydemo.vo;
 
+import com.byteknight.pagequerydemo.entity.NewsArticle;
 import lombok.Data;
 import java.util.List;
 
@@ -12,6 +13,8 @@ public class PageResult<T> {
     private long elapsedMs;
     private List<T> records;
     private int pageDelta;
+    private NewsArticle startArticle;
+    private NewsArticle lastArticle;
 
     public PageResult(int page, int size, long total, long elapsedMs, List<T> records, int pageDelta) {
         this.page = page;
@@ -21,5 +24,16 @@ public class PageResult<T> {
         this.elapsedMs = elapsedMs;
         this.records = records;
         this.pageDelta = pageDelta;
+    }
+    public PageResult(int page, int size, long total, long elapsedMs, List<T> records, int pageDelta, NewsArticle startArticle, NewsArticle lastArticle) {
+        this.page = page;
+        this.size = size;
+        this.total = total;
+        this.totalPages = (int) Math.ceil((double) total / size);
+        this.elapsedMs = elapsedMs;
+        this.records = records;
+        this.pageDelta = pageDelta;
+        this.startArticle = startArticle;
+        this.lastArticle = lastArticle;
     }
 }

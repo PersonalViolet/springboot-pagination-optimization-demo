@@ -40,7 +40,6 @@ public class NewsArticleService {
      */
     public PageResult<NewsArticle> getHybridPage(NewsArticle startArticle, NewsArticle lastArticle, int page, int size) {
         long t0 = System.currentTimeMillis();
-
         // 计算总记录数，仍然使用预设值避免性能问题
         long total = 7000000;
         // 检查参数合法性，确保三个参数只有一个非空且有效
@@ -53,18 +52,24 @@ public class NewsArticleService {
         List<NewsArticle> records;
         if (lastArticle != null && lastArticle.getId() != null) {
             records = newsArticleMapper.selectPageByCursor(lastArticle, size);
+            startArticle = records.get(0);
+            lastArticle = records.get(records.size() - 1);
             pageDelta = 1; // 基于lastArticle查询下一页，page参数无效，pageDelta用于前端展示页码加1
         } else if (startArticle != null && startArticle.getId() != null) {
             // 如果提供了startArticle，则查询上一页数据，基于startArticle的id和publish_time作为游标
             records = newsArticleMapper.selectPreviousPageByCursor(startArticle, size);
+            startArticle = records.get(0);
+            lastArticle = records.get(records.size() - 1);
             pageDelta = -1;
         } else {
             // 如果没有提供游标，则回退到传统分页查询
             int offset = (page - 1) * size;
             records = newsArticleMapper.selectPage(offset, size);
+            startArticle = records.get(0);
+            lastArticle = records.get(records.size() - 1);
         }
         long elapsed = System.currentTimeMillis() - t0;
-        return new PageResult<>(page, size, total, elapsed, records, pageDelta);
+        return new PageResult<>(page, size, total, elapsed, records, pageDelta, startArticle, lastArticle);
     }
 
     /**
