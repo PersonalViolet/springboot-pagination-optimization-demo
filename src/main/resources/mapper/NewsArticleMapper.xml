@@ -13,21 +13,28 @@
     <select id="count" resultType="long">
         SELECT COUNT(*) FROM news_article
     </select>
+
+    <!-- 下一页：查比 lastArticle 更旧的数据，DESC 直接得到正确顺序 -->
     <select id="selectPageByCursor" resultType="com.byteknight.pagequerydemo.entity.NewsArticle">
         SELECT id, title, summary, source, author, publish_time, create_time
         FROM news_article
         WHERE publish_time &lt; #{lastArticle.publishTime}
-        OR (publish_time = #{lastArticle.publishTime} AND id &lt; #{lastArticle.id})
+           OR (publish_time = #{lastArticle.publishTime} AND id &lt; #{lastArticle.id})
         ORDER BY publish_time DESC, id DESC
         LIMIT #{size}
     </select>
+
+    <!-- 上一页：查比 startArticle 更新的数据，ASC 取最近的一批，子查询翻转回 DESC -->
     <select id="selectPreviousPageByCursor" resultType="com.byteknight.pagequerydemo.entity.NewsArticle">
-        SELECT id, title, summary, source, author, publish_time, create_time
-        FROM news_article
-        WHERE publish_time > #{lastArticle.publishTime}
-           OR (publish_time = #{lastArticle.publishTime} AND id > #{lastArticle.id})
+        SELECT * FROM (
+            SELECT id, title, summary, source, author, publish_time, create_time
+            FROM news_article
+            WHERE publish_time &gt; #{startArticle.publishTime}
+               OR (publish_time = #{startArticle.publishTime} AND id &gt; #{startArticle.id})
+            ORDER BY publish_time ASC, id ASC
+            LIMIT #{size}
+        ) AS tmp
         ORDER BY publish_time DESC, id DESC
-        LIMIT #{size}
     </select>
 
 </mapper>
